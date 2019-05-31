@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Бордовских](https://up.htmlacademy.ru/javascript/17/user/379045).
-* Наставник: [Софья Ильинова](https://htmlacademy.ru/profile/i).
+* Наставник: [Евгений Фаллер](https://htmlacademy.ru/profile/id505933).
 
 ---
 
