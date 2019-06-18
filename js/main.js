@@ -1,7 +1,15 @@
 'use strict';
 
 var OFFERS = ['palace', 'flat', 'house', 'bungalo'];
-var objectsNumber = 8;
+var OBJECTS_NUMBER = 8;
+
+var mainPin = document.querySelector('.map__pin--main');
+var addressField = document.querySelector('#address');
+
+var MAIN_PIN_HEIGHT = mainPin.clientHeight;
+var MAIN_PIN_WIDTH = mainPin.clientWidth;
+
+var pins = generatePins();
 
 function generateRandomInt(min, max) {
   var length = max - min + 1;
@@ -9,11 +17,37 @@ function generateRandomInt(min, max) {
 }
 
 function getRandomIndexArr(arr) {
-  return generateRandomInt(0, arr.length);
+  return generateRandomInt(0, arr.length - 1);
 }
 
 function getRandomElementArr(arr) {
   return arr[getRandomIndexArr(arr)];
+}
+
+function disableFields(active) {
+  var fields = document.querySelectorAll('fieldset');
+  for (var i = 0; i < fields.length; i++) {
+    if (active) {
+      fields[i].disabled = true;
+    } else {
+      fields[i].disabled = false;
+    }
+  }
+}
+
+function onActiveState() {
+  disableFields(false);
+  document.querySelector('.map').classList.remove('map--faded');
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  document.querySelector('.map__pins').appendChild(pins);
+}
+
+function setDefaultPinCoors() {
+  addressField.value = MAIN_PIN_HEIGHT / 2 + ', ' + MAIN_PIN_WIDTH / 2;
+}
+
+function onSetPinCoors() {
+  addressField.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
 }
 
 function generateObj(i) {
@@ -39,20 +73,8 @@ function generateArrObjects(n) {
   return arr;
 }
 
-// почему-то не всегда корректно создает рандомную коллекцию
-// function generateRandomObjectsArr(arr) {
-//   var arrCopy = arr.slice();
-//   var randomArr = [];
-//   for (var i = 0; i < arr.length; i++) {
-//     randomArr.push(arrCopy.splice(getRandomIndexArr(arrCopy), 1)[0]);
-//   }
-//   return randomArr;
-// }
-
-var objectsArr = generateArrObjects(objectsNumber);
-// var randomArr = generateRandomObjectsArr(objectsArr);
-
 function generatePins() {
+  var objectsArr = generateArrObjects(OBJECTS_NUMBER);
   var pinTemplate = document.querySelector('#pin').content;
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < objectsArr.length; i++) {
@@ -67,6 +89,10 @@ function generatePins() {
   return fragment;
 }
 
-document.querySelector('.map__pins').appendChild(generatePins());
+disableFields(true);
 
-document.querySelector('.map').classList.remove('map--faded');
+setDefaultPinCoors();
+
+mainPin.addEventListener('click', onActiveState);
+
+mainPin.addEventListener('mouseup', onSetPinCoors);
