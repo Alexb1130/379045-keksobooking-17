@@ -24,14 +24,10 @@ function getRandomElementArr(arr) {
   return arr[getRandomIndexArr(arr)];
 }
 
-function disableFields(active) {
+function disableFields(state) {
   var fields = document.querySelectorAll('fieldset');
   for (var i = 0; i < fields.length; i++) {
-    if (active) {
-      fields[i].disabled = true;
-    } else {
-      fields[i].disabled = false;
-    }
+    fields[i].disabled = state;
   }
 }
 
@@ -65,16 +61,16 @@ function generateObj(i) {
   };
 }
 
-function generateArrObjects(n) {
-  var arr = [];
-  for (var i = 1; i <= n; i++) {
-    arr.push(generateObj(i));
+function generateArrFeatures(number) {
+  var arrFeatures = [];
+  for (var i = 1; i <= number; i++) {
+    arrFeatures.push(generateObj(i));
   }
-  return arr;
+  return arrFeatures;
 }
 
 function generatePins() {
-  var objectsArr = generateArrObjects(OBJECTS_NUMBER);
+  var objectsArr = generateArrFeatures(OBJECTS_NUMBER);
   var pinTemplate = document.querySelector('#pin').content;
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < objectsArr.length; i++) {
