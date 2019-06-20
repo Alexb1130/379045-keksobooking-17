@@ -87,7 +87,7 @@ function generatePins() {
   return fragment;
 }
 
-function onValidationFormFields(evt) {
+function onValidateFormFieldsChanges(evt) {
   var typeSelect = adForm.elements.type;
   var priceField = adForm.elements.price;
   var timeinSelect = adForm.elements.timein;
@@ -110,7 +110,7 @@ disableFields(true);
 
 setDefaultPinCoors();
 
-adForm.addEventListener('change', onValidationFormFields);
+adForm.addEventListener('change', onValidateFormFieldsChanges);
 
 mainPin.addEventListener('click', onActiveState);
 
