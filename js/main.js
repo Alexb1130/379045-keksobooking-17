@@ -5,6 +5,7 @@ var OBJECTS_NUMBER = 8;
 
 var mainPin = document.querySelector('.map__pin--main');
 var addressField = document.querySelector('#address');
+var adForm = document.querySelector('.ad-form');
 
 var MAIN_PIN_HEIGHT = mainPin.clientHeight;
 var MAIN_PIN_WIDTH = mainPin.clientWidth;
@@ -24,14 +25,10 @@ function getRandomElementArr(arr) {
   return arr[getRandomIndexArr(arr)];
 }
 
-function disableFields(active) {
+function disableFields(state) {
   var fields = document.querySelectorAll('fieldset');
   for (var i = 0; i < fields.length; i++) {
-    if (active) {
-      fields[i].disabled = true;
-    } else {
-      fields[i].disabled = false;
-    }
+    fields[i].disabled = state;
   }
 }
 
@@ -65,16 +62,16 @@ function generateObj(i) {
   };
 }
 
-function generateArrObjects(n) {
-  var arr = [];
-  for (var i = 1; i <= n; i++) {
-    arr.push(generateObj(i));
+function generateArrFeatures(number) {
+  var arrFeatures = [];
+  for (var i = 1; i <= number; i++) {
+    arrFeatures.push(generateObj(i));
   }
-  return arr;
+  return arrFeatures;
 }
 
 function generatePins() {
-  var objectsArr = generateArrObjects(OBJECTS_NUMBER);
+  var objectsArr = generateArrFeatures(OBJECTS_NUMBER);
   var pinTemplate = document.querySelector('#pin').content;
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < objectsArr.length; i++) {
@@ -89,9 +86,37 @@ function generatePins() {
   return fragment;
 }
 
+function onValidationFormFields(evt) {
+  var typeSelect = adForm.elements.type;
+  var priceField = adForm.elements.price;
+  var timeinSelect = adForm.elements.timein;
+  var timeoutSelect = adForm.elements.timeout;
+
+  if (typeSelect.value === 'bungalo') {
+    priceField.placeholder = '0';
+    priceField.min = 0;
+  } else if (typeSelect.value === 'flat') {
+    priceField.placeholder = '1000';
+    priceField.min = 1000;
+  } else if (typeSelect.value === 'house') {
+    priceField.placeholder = '5000';
+    priceField.min = 5000;
+  } else if (typeSelect.value === 'palace') {
+    priceField.placeholder = '10000';
+    priceField.min = 10000;
+  }
+
+  if (evt.target === timeinSelect || evt.target === timeoutSelect) {
+    timeinSelect.value = evt.target.value;
+    timeoutSelect.value = evt.target.value;
+  }
+}
+
 disableFields(true);
 
 setDefaultPinCoors();
+
+adForm.addEventListener('change', onValidationFormFields);
 
 mainPin.addEventListener('click', onActiveState);
 
