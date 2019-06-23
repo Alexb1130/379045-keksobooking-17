@@ -7,9 +7,15 @@ var OBJECTS_NUMBER = 8;
 var mainPin = document.querySelector('.map__pin--main');
 var addressField = document.querySelector('#address');
 var adForm = document.querySelector('.ad-form');
+var map = document.querySelector('.map');
+var mapPins = map.querySelector('.map__pins');
 
 var MAIN_PIN_HEIGHT = mainPin.clientHeight;
 var MAIN_PIN_WIDTH = mainPin.clientWidth;
+var MAIN_PIN_SHARP_END = 22;
+var MAP_WIDTH = mapPins.offsetWidth;
+var MAP_HEIGHT = mapPins.offsetHeight;
+var MAP_SKY_HEIGHT = 100;
 
 var pins = generatePins();
 
@@ -35,17 +41,17 @@ function disableFields(state) {
 
 function onActiveState() {
   disableFields(false);
-  document.querySelector('.map').classList.remove('map--faded');
-  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-  document.querySelector('.map__pins').appendChild(pins);
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  mapPins.appendChild(pins);
 }
 
-function setDefaultPinCoors() {
+function setDefaultPinCoodrs() {
   addressField.value = MAIN_PIN_HEIGHT / 2 + ', ' + MAIN_PIN_WIDTH / 2;
 }
 
-function onSetPinCoors() {
-  addressField.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+function onSetPinCoodrs() {
+  addressField.value = mainPin.offsetLeft + ', ' + parseInt(mainPin.offsetTop + MAIN_PIN_SHARP_END, 10);
 }
 
 function generateObj(i) {
@@ -57,7 +63,7 @@ function generateObj(i) {
       type: getRandomElementArr(OFFERS)
     },
     location: {
-      x: generateRandomInt(0, document.querySelector('.map__overlay').clientWidth),
+      x: generateRandomInt(0, MAP_WIDTH),
       y: generateRandomInt(130, 630)
     }
   };
@@ -106,12 +112,59 @@ function onValidateFormFieldsChanges(evt) {
   }
 }
 
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  function onMouseMove(moveEvt) {
+    moveEvt.preventDefault();
+
+    onActiveState();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    if (mainPin.offsetLeft <= 0) {
+      mainPin.style.left = 0 + 'px';
+    } else if (mainPin.offsetLeft >= MAP_WIDTH - MAIN_PIN_WIDTH) {
+      mainPin.style.left = MAP_WIDTH - MAIN_PIN_WIDTH + 'px';
+    } else if (mainPin.offsetTop <= MAP_SKY_HEIGHT) {
+      mainPin.style.top = MAP_SKY_HEIGHT + 'px';
+    } else if (mainPin.offsetTop >= MAP_HEIGHT - MAIN_PIN_HEIGHT - MAIN_PIN_SHARP_END) {
+      mainPin.style.top = MAP_HEIGHT - MAIN_PIN_HEIGHT - MAIN_PIN_SHARP_END + 'px';
+    }
+
+    mainPin.style.top = mainPin.offsetTop - shift.y + 'px';
+    mainPin.style.left = mainPin.offsetLeft - shift.x + 'px';
+  }
+
+  function onMouseUp(upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+});
+
 disableFields(true);
 
-setDefaultPinCoors();
+setDefaultPinCoodrs();
 
 adForm.addEventListener('change', onValidateFormFieldsChanges);
 
-mainPin.addEventListener('click', onActiveState);
-
-mainPin.addEventListener('mouseup', onSetPinCoors);
+mainPin.addEventListener('mouseup', onSetPinCoodrs);
