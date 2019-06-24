@@ -10,12 +10,15 @@ var adForm = document.querySelector('.ad-form');
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
 
-var MAIN_PIN_HEIGHT = mainPin.clientHeight;
-var MAIN_PIN_WIDTH = mainPin.clientWidth;
-var MAIN_PIN_SHARP_END = 22;
+var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
+var MAIN_PIN_WIDTH = mainPin.offsetWidth;
 var MAP_WIDTH = mapPins.offsetWidth;
-var MAP_HEIGHT = mapPins.offsetHeight;
-var MAP_SKY_HEIGHT = 100;
+var MAIN_PIN_SHARP_END = 20;
+var OFFSET = 10;
+var MIN_Y_COORD = 130;
+var MAX_Y_COORD = 630;
+var MIN_X_COORD = 0;
+var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
 
 var pins = generatePins();
 
@@ -47,11 +50,14 @@ function onActiveState() {
 }
 
 function setDefaultPinCoodrs() {
-  addressField.value = MAIN_PIN_HEIGHT / 2 + ', ' + MAIN_PIN_WIDTH / 2;
+  addressField.value = parseInt(MAIN_PIN_HEIGHT / 2, 10) + ', ' + parseInt(MAIN_PIN_WIDTH / 2, 10);
 }
 
 function onSetPinCoodrs() {
-  addressField.value = mainPin.offsetLeft + ', ' + parseInt(mainPin.offsetTop + MAIN_PIN_SHARP_END, 10);
+  var currentPinX = parseInt(mainPin.offsetLeft + (MAIN_PIN_WIDTH / 2), 10);
+  var currentPinY = parseInt(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_SHARP_END, 10);
+
+  addressField.value = currentPinX + ', ' + currentPinY;
 }
 
 function generateObj(i) {
@@ -135,14 +141,14 @@ mainPin.addEventListener('mousedown', function (evt) {
       y: moveEvt.clientY
     };
 
-    if (mainPin.offsetLeft <= 0) {
-      mainPin.style.left = 0 + 'px';
-    } else if (mainPin.offsetLeft >= MAP_WIDTH - MAIN_PIN_WIDTH) {
-      mainPin.style.left = MAP_WIDTH - MAIN_PIN_WIDTH + 'px';
-    } else if (mainPin.offsetTop <= MAP_SKY_HEIGHT) {
-      mainPin.style.top = MAP_SKY_HEIGHT + 'px';
-    } else if (mainPin.offsetTop >= MAP_HEIGHT - MAIN_PIN_HEIGHT - MAIN_PIN_SHARP_END) {
-      mainPin.style.top = MAP_HEIGHT - MAIN_PIN_HEIGHT - MAIN_PIN_SHARP_END + 'px';
+    if (mainPin.offsetLeft <= MIN_X_COORD) {
+      mainPin.style.left = OFFSET + 'px';
+    } else if (mainPin.offsetLeft >= MAX_X_COORD) {
+      mainPin.style.left = MAX_X_COORD - OFFSET + 'px';
+    } else if (mainPin.offsetTop <= MIN_Y_COORD) {
+      mainPin.style.top = MIN_Y_COORD + 'px';
+    } else if (mainPin.offsetTop >= MAX_Y_COORD) {
+      mainPin.style.top = MAX_Y_COORD + 'px';
     }
 
     mainPin.style.top = mainPin.offsetTop - shift.y + 'px';
@@ -159,6 +165,8 @@ mainPin.addEventListener('mousedown', function (evt) {
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 
+  document.addEventListener('mouseup', onSetPinCoodrs);
+
 });
 
 disableFields(true);
@@ -166,5 +174,3 @@ disableFields(true);
 setDefaultPinCoodrs();
 
 adForm.addEventListener('change', onValidateFormFieldsChanges);
-
-mainPin.addEventListener('mouseup', onSetPinCoodrs);
