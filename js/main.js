@@ -1,15 +1,14 @@
 'use strict';
 
-var OFFERS = ['bungalo', 'flat', 'house', 'palace'];
-var OFFERS_PRISES = [0, 1000, 5000, 10000];
-var OBJECTS_NUMBER = 8;
-
 var mainPin = document.querySelector('.map__pin--main');
 var addressField = document.querySelector('#address');
 var adForm = document.querySelector('.ad-form');
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
 
+var OFFERS = ['bungalo', 'flat', 'house', 'palace'];
+var OFFERS_PRISES = [0, 1000, 5000, 10000];
+var OBJECTS_NUMBER = 8;
 var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
 var MAIN_PIN_WIDTH = mainPin.offsetWidth;
 var MAP_WIDTH = mapPins.offsetWidth;
@@ -21,19 +20,6 @@ var MIN_X_COORD = 0;
 var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
 
 var pins = generatePins();
-
-function generateRandomInt(min, max) {
-  var length = max - min + 1;
-  return Math.floor(Math.random() * length + min);
-}
-
-function getRandomIndexArr(arr) {
-  return generateRandomInt(0, arr.length - 1);
-}
-
-function getRandomElementArr(arr) {
-  return arr[getRandomIndexArr(arr)];
-}
 
 function disableFields(state) {
   var fields = document.querySelectorAll('fieldset');
