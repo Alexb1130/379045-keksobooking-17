@@ -2,10 +2,6 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var addressField = document.querySelector('#address');
-  var mainPin = document.querySelector('.map__pin--main');
-  var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
-  var MAIN_PIN_WIDTH = mainPin.offsetWidth;
 
   var OFFERS_PROPS = [
     {
@@ -28,13 +24,11 @@
 
   window.disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
+
     for (var i = 0; i < fields.length; i++) {
       fields[i].disabled = state;
     }
-  };
 
-  var setDefaultPinCoodrs = function () {
-    addressField.value = parseInt(MAIN_PIN_HEIGHT / 2, 10) + ', ' + parseInt(MAIN_PIN_WIDTH / 2, 10);
   };
 
   var onValidateFormFieldsChanges = function (evt) {
@@ -56,7 +50,7 @@
     }
   };
 
-  setDefaultPinCoodrs();
+  window.disableFields(true);
 
   adForm.addEventListener('change', onValidateFormFieldsChanges);
 

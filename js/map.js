@@ -2,11 +2,11 @@
 
 (function () {
   var OBJECTS_NUMBER = 8;
+  var arrFeatures = window.generateArrFeatures(OBJECTS_NUMBER);
+  var fragment = document.createDocumentFragment();
+  var pinTemplate = document.querySelector('#pin').content;
 
   window.generatePins = function () {
-    var arrFeatures = window.generateArrFeatures(OBJECTS_NUMBER);
-    var fragment = document.createDocumentFragment();
-    var pinTemplate = document.querySelector('#pin').content;
 
     for (var i = 0; i < arrFeatures.length; i++) {
       var pin = pinTemplate.querySelector('.map__pin').cloneNode(true);
@@ -17,7 +17,9 @@
       avatar.alt = arrFeatures[i].offer.type;
       fragment.appendChild(pin);
     }
+
     return fragment;
+
   };
 
 })();
