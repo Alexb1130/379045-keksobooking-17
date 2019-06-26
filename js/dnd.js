@@ -48,7 +48,6 @@
         window.utils.onActiveState(map, adForm, function () {
           window.disableFields(false);
           mapPinsContainer.appendChild(mapPins);
-          console.log(1);
         });
       }
 
