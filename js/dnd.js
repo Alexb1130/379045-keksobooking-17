@@ -7,6 +7,7 @@
   var mainPin = document.querySelector('.map__pin--main');
   var mapPins = map.querySelector('.map__pins');
   var addressField = document.querySelector('#address');
+  var activeState = false;
 
   var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
   var MAIN_PIN_WIDTH = mainPin.offsetWidth;
@@ -25,7 +26,6 @@
     mapPins.appendChild(pins);
   }
 
-  // form
   function onSetPinCoodrs() {
     var currentPinX = parseInt(mainPin.offsetLeft + (MAIN_PIN_WIDTH / 2), 10);
     var currentPinY = parseInt(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_SHARP_END, 10);
@@ -44,8 +44,11 @@
     function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
 
-      // main
-      onActiveState();
+      if (!activeState) {
+        onActiveState();
+      }
+
+      activeState = true;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
