@@ -1,14 +1,19 @@
 'use strict';
 
-function generateRandomInt(min, max) {
-  var length = max - min + 1;
-  return Math.floor(Math.random() * length + min);
-}
+(function () {
 
-function getRandomIndexArr(arr) {
-  return generateRandomInt(0, arr.length - 1);
-}
+  var getRandomIndexArr = function (arr) {
+    return window.helpers.generateRandomInt(0, arr.length - 1);
+  };
 
-function getRandomElementArr(arr) {
-  return arr[getRandomIndexArr(arr)];
-}
+  window.helpers = {
+    generateRandomInt: function (min, max) {
+      var length = max - min + 1;
+      return Math.floor(Math.random() * length + min);
+    },
+    getRandomElementArr: function (arr) {
+      return arr[getRandomIndexArr(arr)];
+    }
+  };
+
+})();
