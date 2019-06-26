@@ -2,15 +2,15 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var pins = window.generatePins();
+  var addressField = adForm.elements.address;
   var map = document.querySelector('.map');
+  var mapPinsContainer = map.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
-  var mapPins = map.querySelector('.map__pins');
-  var addressField = document.querySelector('#address');
+  var mapPins = window.generatePins();
 
   var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
   var MAIN_PIN_WIDTH = mainPin.offsetWidth;
-  var MAP_WIDTH = mapPins.offsetWidth;
+  var MAP_WIDTH = mapPinsContainer.offsetWidth;
   var MAIN_PIN_SHARP_END = 20;
   var OFFSET = 10;
   var MIN_Y_COORD = 130;
@@ -18,20 +18,19 @@
   var MIN_X_COORD = 0;
   var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
 
-  function onActiveState() {
-    window.disableFields(false);
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    mapPins.appendChild(pins);
-  }
+  var setDefaultPinCoodrs = function () {
+    var currentPinX = parseInt(MAIN_PIN_HEIGHT / 2, 10);
+    var currentPinY = parseInt(MAIN_PIN_WIDTH / 2, 10);
 
-  // form
-  function onSetPinCoodrs() {
+    addressField.value = currentPinX + ', ' + currentPinY;
+  };
+
+  var onSetPinCoodrs = function () {
     var currentPinX = parseInt(mainPin.offsetLeft + (MAIN_PIN_WIDTH / 2), 10);
     var currentPinY = parseInt(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_SHARP_END, 10);
 
     addressField.value = currentPinX + ', ' + currentPinY;
-  }
+  };
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -41,11 +40,13 @@
       y: evt.clientY
     };
 
-    function onMouseMove(moveEvt) {
+    var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      // main
-      onActiveState();
+      window.utils.onActiveState(map, adForm, function () {
+        window.disableFields(false);
+        mapPinsContainer.appendChild(mapPins);
+      });
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -69,14 +70,14 @@
 
       mainPin.style.top = mainPin.offsetTop - shift.y + 'px';
       mainPin.style.left = mainPin.offsetLeft - shift.x + 'px';
-    }
+    };
 
-    function onMouseUp(upEvt) {
+    var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-    }
+    };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -84,5 +85,7 @@
     document.addEventListener('mouseup', onSetPinCoodrs);
 
   });
+
+  setDefaultPinCoodrs();
 
 })();
