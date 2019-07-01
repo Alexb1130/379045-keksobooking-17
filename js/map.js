@@ -6,6 +6,8 @@
   var map = document.querySelector('.map');
   var mapPinsContainer = map.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
+  var cardContainer = document.querySelector('.map__filters-container');
+  var cards;
   var activeState = false;
 
   var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
@@ -48,7 +50,10 @@
     }
   };
 
-  var onSucces = function (mapPins) {
+  var onSucces = function (data) {
+    var mapPins = window.generatePins(data);
+    cards = window.card.generateCards(data);
+
     mapPinsContainer.appendChild(mapPins);
   };
 
@@ -66,13 +71,23 @@
 
     var onClickMapPin = function (clickEvt) {
       var mapPin = clickEvt.target.closest('.map__pin');
+      var card;
       var activePin = mapPinsContainer.querySelector('.map__pin--active');
+
+      var cardHidden = function () {
+        cards.appendChild(card);
+      };
 
       if (mapPin && !mapPin.classList.contains('map__pin--main')) {
         if (activePin) {
           activePin.classList.remove('map__pin--active');
         }
+
         mapPin.classList.add('map__pin--active');
+        card = cards.querySelector('[data-user="' + mapPin.dataset.user + '"]');
+        map.insertBefore(card, cardContainer);
+
+        card.querySelector('.popup__close').addEventListener('click', cardHidden);
       }
     };
 

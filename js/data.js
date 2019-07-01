@@ -9,8 +9,7 @@
 
     xhr.addEventListener('load', function () {
       try {
-        onSucces(window.generatePins(xhr.response));
-        // window.card.generateCard(xhr.response);
+        onSucces(xhr.response);
       } catch (err) {
         onError();
       }

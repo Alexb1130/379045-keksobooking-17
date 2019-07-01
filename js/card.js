@@ -2,8 +2,9 @@
 
 (function () {
   var errorMessage = document.querySelector('#error').content.cloneNode(true);
+  var fragment = document.createDocumentFragment();
 
-  var generateCard = function (data) {
+  var generateCards = function (data) {
 
     for (var i = 0; i < data.length; i++) {
       var dataItem = data[i];
@@ -12,6 +13,7 @@
 
       avatar.src = dataItem.author.avatar;
       avatar.alt = dataItem.offer.type;
+      card.querySelector('.map__card').dataset.user = i;
       card.querySelector('.popup__title').textContent = dataItem.offer.title;
       card.querySelector('.popup__text--address').textContent = dataItem.offer.address;
       card.querySelector('.popup__text--price').textContent = dataItem.offer.price;
@@ -21,15 +23,15 @@
       // card..querySelector('.popup__features');
       card.querySelector('.popup__description').textContent = dataItem.description;
       // card..querySelector('.popup__photos');
-
+      fragment.appendChild(card);
     }
 
-    return card;
+    return fragment;
   };
 
   window.card = {
     errorMessage: errorMessage,
-    generateCard: generateCard
+    generateCards: generateCards
   };
 
 })();
