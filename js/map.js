@@ -73,18 +73,24 @@
       var mapPin = clickEvt.target.closest('.map__pin');
       var card;
       var activePin = mapPinsContainer.querySelector('.map__pin--active');
+      var activeCard = map.querySelector('.map__card--active');
 
       var cardHidden = function () {
         cards.appendChild(card);
+        var pin = map.querySelector('[data-user="' + card.dataset.user + '"]');
+        pin.classList.remove('map__pin--active');
       };
 
       if (mapPin && !mapPin.classList.contains('map__pin--main')) {
-        if (activePin) {
+        if (activePin && activeCard) {
+          cards.appendChild(activeCard);
+          activeCard.classList.remove('map__card--active');
           activePin.classList.remove('map__pin--active');
         }
 
         mapPin.classList.add('map__pin--active');
         card = cards.querySelector('[data-user="' + mapPin.dataset.user + '"]');
+        card.classList.add('map__card--active');
         map.insertBefore(card, cardContainer);
 
         card.querySelector('.popup__close').addEventListener('click', cardHidden);
