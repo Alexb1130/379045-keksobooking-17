@@ -3,31 +3,19 @@
 (function () {
   var adForm = document.querySelector('.ad-form');
 
-  var OFFERS_PROPS = [
-    {
-      offer: 'bungalo',
-      price: 0
-    },
-    {
-      offer: 'flat',
-      price: 1000
-    },
-    {
-      offer: 'house',
-      price: 5000
-    },
-    {
-      offer: 'palace',
-      price: 10000
-    },
-  ];
+  var OffersProps = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
 
-  window.disableFields = function (state) {
+  var disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
 
-    for (var i = 0; i < fields.length; i++) {
-      fields[i].disabled = state;
-    }
+    fields.forEach(function (field) {
+      field.disabled = state;
+    });
 
   };
 
@@ -37,12 +25,8 @@
     var timeinSelect = adForm.elements.timein;
     var timeoutSelect = adForm.elements.timeout;
 
-    for (var i = 0; i < OFFERS_PROPS.length; i++) {
-      if (typeSelect.value === OFFERS_PROPS[i].offer) {
-        priceField.placeholder = OFFERS_PROPS[i].price;
-        priceField.min = OFFERS_PROPS[i].price;
-      }
-    }
+    priceField.placeholder = OffersProps[typeSelect.value];
+    priceField.min = OffersProps[typeSelect.value];
 
     if (evt.target === timeinSelect || evt.target === timeoutSelect) {
       timeinSelect.value = evt.target.value;
@@ -50,7 +34,11 @@
     }
   };
 
-  window.disableFields(true);
+  window.form = {
+    disableFields: disableFields,
+  };
+
+  window.form.disableFields(true);
 
   adForm.addEventListener('change', onValidateFormFieldsChanges);
 

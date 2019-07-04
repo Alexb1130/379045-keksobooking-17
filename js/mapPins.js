@@ -4,7 +4,7 @@
   var fragment = document.createDocumentFragment();
   var pinTemplate = document.querySelector('#pin').content;
 
-  window.generatePins = function (data) {
+  var generatePins = function (data) {
 
     for (var i = 0; i < data.length; i++) {
       var pin = pinTemplate.querySelector('.map__pin').cloneNode(true);
@@ -19,6 +19,10 @@
 
     return fragment;
 
+  };
+
+  window.mapPins = {
+    generatePins: generatePins
   };
 
 })();

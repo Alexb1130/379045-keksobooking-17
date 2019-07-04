@@ -19,6 +19,8 @@
     xhr.send();
   };
 
-  window.load = load;
+  window.data = {
+    load: load
+  };
 
 })();

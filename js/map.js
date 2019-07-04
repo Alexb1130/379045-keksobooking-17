@@ -51,7 +51,7 @@
   };
 
   var onSucces = function (data) {
-    var mapPins = window.generatePins(data);
+    var mapPins = window.mapPins.generatePins(data);
     cards = window.card.generateCards(data);
 
     mapPinsContainer.appendChild(mapPins);
@@ -102,9 +102,9 @@
 
       if (!activeState) {
         window.utils.onActiveState(map, adForm, function () {
-          window.disableFields(false);
+          window.form.disableFields(false);
 
-          window.load(onSucces, onError);
+          window.data.load(onSucces, onError);
 
           document.addEventListener('click', onClickMapPin);
 
