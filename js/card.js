@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var errorMessage = document.querySelector('#error').content.cloneNode(true);
   var fragment = document.createDocumentFragment();
 
   var OffersTypes = {
@@ -15,12 +14,12 @@
     var photosContainer = cardItem.querySelector('.popup__photos');
     var imageTemplate = photosContainer.querySelector('.popup__photo');
 
-    for (var i = 0; i < photos.length; i++) {
+    photos.forEach(function (photo) {
       var image = imageTemplate.cloneNode(true);
       imageTemplate.remove();
-      image.src = photos[i];
+      image.src = photo;
       photosContainer.appendChild(image);
-    }
+    });
 
     if (!photos.length) {
       photosContainer.remove();
@@ -32,11 +31,11 @@
     var featuresContainer = cardItem.querySelector('.popup__features');
     featuresContainer.innerHTML = '';
 
-    for (var i = 0; i < features.length; i++) {
-      var feature = document.createElement('li');
-      feature.classList.add('popup__feature', 'popup__feature--' + features[i]);
-      featuresContainer.appendChild(feature);
-    }
+    features.forEach(function (feature) {
+      var featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature', 'popup__feature--' + feature);
+      featuresContainer.appendChild(featureItem);
+    });
 
     if (!features.length) {
       featuresContainer.remove();
@@ -46,14 +45,13 @@
 
   var generateCards = function (data) {
 
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
+    data.forEach(function (dataItem, index) {
       var card = document.querySelector('#card').content.cloneNode(true);
       var avatar = card.querySelector('.popup__avatar');
 
       avatar.src = dataItem.author.avatar;
       avatar.alt = dataItem.offer.type;
-      card.querySelector('.map__card').dataset.user = i;
+      card.querySelector('.map__card').dataset.user = index;
       card.querySelector('.popup__title').textContent = dataItem.offer.title;
       card.querySelector('.popup__text--address').textContent = dataItem.offer.address;
       card.querySelector('.popup__text--price').textContent = dataItem.offer.price;
@@ -64,13 +62,12 @@
       generatePhotos(card, dataItem.offer.photos);
       generateFeatures(card, dataItem.offer.features);
       fragment.appendChild(card);
-    }
+    });
 
     return fragment;
   };
 
   window.card = {
-    errorMessage: errorMessage,
     generateCards: generateCards
   };
 

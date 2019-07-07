@@ -2,6 +2,7 @@
 
 (function () {
   var URL = 'https://js.dump.academy/keksobooking/data';
+  var errorMessage = document.querySelector('#error').content.cloneNode(true);
 
   var load = function (onSucces, onError) {
     var xhr = new XMLHttpRequest();
@@ -23,7 +24,8 @@
   };
 
   window.data = {
-    load: load
+    load: load,
+    errorMessage: errorMessage
   };
 
 })();

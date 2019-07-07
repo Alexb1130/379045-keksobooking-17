@@ -58,7 +58,7 @@
   };
 
   var onError = function () {
-    document.body.appendChild(window.card.errorMessage);
+    document.body.appendChild(window.data.errorMessage);
   };
 
 
