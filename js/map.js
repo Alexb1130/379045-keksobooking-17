@@ -61,6 +61,7 @@
     document.body.appendChild(window.card.errorMessage);
   };
 
+
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 

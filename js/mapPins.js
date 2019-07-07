@@ -6,16 +6,21 @@
 
   var generatePins = function (data) {
 
-    for (var i = 0; i < data.length; i++) {
+    var mapPins = data.map(function (item, index) {
       var pin = pinTemplate.querySelector('.map__pin').cloneNode(true);
-      pin.dataset.user = i;
+      pin.dataset.user = index;
       var avatar = pin.querySelector('img');
-      pin.style.left = data[i].location.x + 'px';
-      pin.style.top = data[i].location.y + 'px';
-      avatar.src = data[i].author.avatar;
-      avatar.alt = data[i].offer.type;
+      pin.style.left = item.location.x + 'px';
+      pin.style.top = item.location.y + 'px';
+      avatar.src = item.author.avatar;
+      avatar.alt = item.offer.type;
+
+      return pin;
+    });
+
+    mapPins.splice(0, 5).forEach(function (pin) {
       fragment.appendChild(pin);
-    }
+    });
 
     return fragment;
 

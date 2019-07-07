@@ -15,6 +15,9 @@
       }
     });
 
+    xhr.addEventListener('error', onError);
+    xhr.addEventListener('timeout', onError);
+
     xhr.open('GET', URL);
     xhr.send();
   };
