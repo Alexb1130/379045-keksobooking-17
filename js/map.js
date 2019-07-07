@@ -9,43 +9,45 @@
   var cardContainer = document.querySelector('.map__filters-container');
   var cards;
   var activeState = false;
-
-  var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
-  var MAIN_PIN_WIDTH = mainPin.offsetWidth;
-  var MAP_WIDTH = mapPinsContainer.offsetWidth;
-  var MAIN_PIN_SHARP_END = 20;
+  var MAP_WIDTH = map.offsetWidth;
   var OFFSET = 20;
-  var MIN_Y_COORD = 130;
-  var MAX_Y_COORD = 630;
-  var MIN_X_COORD = 0;
-  var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
+
+  var mainPinProps = {
+    height: mainPin.offsetHeight,
+    width: mainPin.offsetWidth,
+    maxXcoord: MAP_WIDTH - mainPin.offsetWidth,
+    minXcoord: 0,
+    maxYcoord: 630,
+    minYcoord: 130,
+    sharpEnd: 20,
+  };
 
   var setDefaultPinCoodrs = function () {
-    var currentPinX = parseInt(MAIN_PIN_HEIGHT / 2, 10);
-    var currentPinY = parseInt(MAIN_PIN_WIDTH / 2, 10);
+    var currentPinX = parseInt(mainPinProps.height / 2, 10);
+    var currentPinY = parseInt(mainPinProps.width / 2, 10);
 
     addressField.value = currentPinX + ', ' + currentPinY;
   };
 
   var onSetPinCoodrs = function () {
-    var currentPinX = parseInt(mainPin.offsetLeft + (MAIN_PIN_WIDTH / 2), 10);
-    var currentPinY = parseInt(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_SHARP_END, 10);
+    var currentPinX = parseInt(mainPin.offsetLeft + (mainPinProps.width / 2), 10);
+    var currentPinY = parseInt(mainPin.offsetTop + (mainPinProps.height + mainPinProps.sharpEnd), 10);
 
     addressField.value = currentPinX + ', ' + currentPinY;
   };
 
   var preventLossMainPin = function (removeHandler) {
-    if (mainPin.offsetLeft <= MIN_X_COORD) {
+    if (mainPin.offsetLeft <= mainPinProps.minXcoord) {
       mainPin.style.left = OFFSET + 'px';
       document.removeEventListener('mousemove', removeHandler);
-    } else if (mainPin.offsetLeft >= MAX_X_COORD) {
-      mainPin.style.left = MAX_X_COORD - OFFSET + 'px';
+    } else if (mainPin.offsetLeft >= mainPinProps.maxXcoord) {
+      mainPin.style.left = mainPinProps.maxXcoord - OFFSET + 'px';
       document.removeEventListener('mousemove', removeHandler);
-    } else if (mainPin.offsetTop <= MIN_Y_COORD) {
-      mainPin.style.top = (MIN_Y_COORD + OFFSET) + 'px';
+    } else if (mainPin.offsetTop <= mainPinProps.minYcoord) {
+      mainPin.style.top = (mainPinProps.minYcoord + OFFSET) + 'px';
       document.removeEventListener('mousemove', removeHandler);
-    } else if (mainPin.offsetTop >= MAX_Y_COORD) {
-      mainPin.style.top = (MAX_Y_COORD - OFFSET) + 'px';
+    } else if (mainPin.offsetTop >= mainPinProps.maxYcoord) {
+      mainPin.style.top = (mainPinProps.maxYcoord - OFFSET) + 'px';
       document.removeEventListener('mousemove', removeHandler);
     }
   };
