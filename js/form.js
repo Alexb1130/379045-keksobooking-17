@@ -22,7 +22,7 @@
     '2': ['0', '3'],
     '3': ['0'],
     '100': ['1', '2', '3']
-  }
+  };
 
   var disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
@@ -47,6 +47,10 @@
     if (evt.target === roomNumberSelect) {
 
       capacitySelect.value = CapacityProps[roomNumberSelect.value];
+
+      Array.from(capacitySelect.options).forEach(function (option) {
+        option.disabled = false;
+      });
 
       CapacityDisablesdFields[roomNumberSelect.value].forEach(function (value) {
         capacitySelect.querySelector('option' + '[value="' + value + '"]').disabled = true;
