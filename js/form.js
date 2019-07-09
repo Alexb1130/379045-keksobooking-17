@@ -40,8 +40,14 @@
     if (evt.target === roomNumberSelect) {
       capacitySelect.value = CapacityProps[roomNumberSelect.value];
 
-      var capacitySelectValues = Array.from(capacitySelect.options).map(function (option) {
-        return parseInt(option.value, 10);
+      Array.from(capacitySelect.options).forEach(function (option) {
+
+        if (roomNumberSelect.value === '1' || roomNumberSelect.value === '100') {
+          option.disabled = option.value !== roomNumberSelect.value;
+        } else {
+          option.disabled = false;
+        }
+
       });
 
     }
