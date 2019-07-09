@@ -17,6 +17,13 @@
     '100': '0',
   };
 
+  var CapacityDisablesdFields = {
+    '1': ['0', '2', '3'],
+    '2': ['0', '3'],
+    '3': ['0'],
+    '100': ['1', '2', '3']
+  }
+
   var disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
 
@@ -38,18 +45,12 @@
     priceField.min = OffersProps[typeSelect.value];
 
     if (evt.target === roomNumberSelect) {
+
       capacitySelect.value = CapacityProps[roomNumberSelect.value];
 
-      Array.from(capacitySelect.options).forEach(function (option) {
-
-        if (roomNumberSelect.value === '1' || roomNumberSelect.value === '100') {
-          option.disabled = option.value !== roomNumberSelect.value;
-        } else {
-          option.disabled = false;
-        }
-
+      CapacityDisablesdFields[roomNumberSelect.value].forEach(function (value) {
+        capacitySelect.querySelector('option' + '[value="' + value + '"]').disabled = true;
       });
-
     }
 
     if (evt.target === timeinSelect || evt.target === timeoutSelect) {
