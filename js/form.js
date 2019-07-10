@@ -2,6 +2,7 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
+  var success = document.querySelector('#success').content.cloneNode(true);
 
   var OffersProps = {
     'bungalo': 0,
@@ -23,6 +24,14 @@
     '3': ['0'],
     '100': ['1', '2', '3']
   };
+
+  var onError = function () {
+    document.body.appendChild(window.data.errorMessage);
+  };
+
+  var onSucces = function () {
+    console.log('succes');
+  }
 
   var disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
@@ -69,6 +78,15 @@
 
   window.form.disableFields(true);
 
+  var data = new window.data.save('POST', 'https://js.dump.academy/keksobooking');
+
   adForm.addEventListener('change', onValidateFormFieldsChanges);
+
+  adForm.addEventListener('submit', function(evt) {
+    evt.preventDefault();
+    var formData = new FormData(adForm);
+    data.save(formData, onSucces, onError);
+    adForm.reset();
+  });
 
 })();

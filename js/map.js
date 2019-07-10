@@ -20,6 +20,8 @@
   var MIN_X_COORD = 0;
   var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
 
+  var data = new window.data.load('GET', window.data.URL + '/data');
+
   var setDefaultPinCoodrs = function () {
     var currentPinX = parseInt(MAIN_PIN_HEIGHT / 2, 10);
     var currentPinY = parseInt(MAIN_PIN_WIDTH / 2, 10);
@@ -105,7 +107,7 @@
         window.utils.onActiveState(map, adForm, function () {
           window.form.disableFields(false);
 
-          window.data.load(onSucces, onError);
+          data.load(onSucces, onError);
 
           document.addEventListener('click', onClickMapPin);
 
