@@ -66,6 +66,10 @@
       });
     }
 
+    if (CapacityDisablesdFields[roomNumberSelect.value].includes(capacitySelect.value)) {
+      capacitySelect.value = CapacityProps[roomNumberSelect.value];
+    }
+
     if (evt.target === timeinSelect || evt.target === timeoutSelect) {
       timeinSelect.value = evt.target.value;
       timeoutSelect.value = evt.target.value;
