@@ -4,10 +4,10 @@
   var URL = 'https://js.dump.academy/keksobooking';
   var errorMessage = document.querySelector('#error').content.cloneNode(true);
 
-  var Data = function(method, url) {
+  var Data = function (method, url) {
     this.method = method;
     this.url = url;
-  }
+  };
 
   Data.prototype._requestBody = function (onSucces, onError) {
 
@@ -30,20 +30,20 @@
     xhr.open(this.method, this.url);
 
     return xhr;
-  }
+  };
 
   Data.prototype.load = function (onSucces, onError) {
     this._requestBody(onSucces, onError).send();
-  }
+  };
 
   Data.prototype.save = function (data, onSucces, onError) {
     this._requestBody(onSucces, onError).send(data);
-  }
+  };
 
   window.data = {
     URL: URL,
-    load: Data,
-    save: Data,
+    Load: Data,
+    Save: Data,
     errorMessage: errorMessage
   };
 

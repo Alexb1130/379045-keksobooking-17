@@ -20,7 +20,7 @@
   var MIN_X_COORD = 0;
   var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
 
-  var data = new window.data.load('GET', window.data.URL + '/data');
+  var data = new window.data.Load('GET', window.data.URL + '/data');
 
   var setDefaultPinCoodrs = function () {
     var currentPinX = parseInt(MAIN_PIN_HEIGHT / 2, 10);

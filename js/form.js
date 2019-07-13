@@ -82,11 +82,11 @@
 
   window.form.disableFields(true);
 
-  var data = new window.data.save('POST', 'https://js.dump.academy/keksobooking');
+  var data = new window.data.Save('POST', 'https://js.dump.academy/keksobooking');
 
   adForm.addEventListener('change', onValidateFormFieldsChanges);
 
-  adForm.addEventListener('submit', function(evt) {
+  adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var formData = new FormData(adForm);
     data.save(formData, onSucces, onError);
