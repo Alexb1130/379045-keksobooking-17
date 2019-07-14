@@ -2,7 +2,6 @@
 
 (function () {
   var URL = 'https://js.dump.academy/keksobooking';
-  var errorMessage = document.querySelector('#error').content.cloneNode(true);
 
   var Data = function (method, url) {
     this.method = method;
@@ -19,7 +18,6 @@
       try {
         onSucces(xhr.response);
       } catch (err) {
-        console.log(err.message);
         onError();
       }
     });
@@ -44,7 +42,6 @@
     URL: URL,
     Load: Data,
     Save: Data,
-    errorMessage: errorMessage
   };
 
 })();
