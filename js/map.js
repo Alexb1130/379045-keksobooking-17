@@ -8,7 +8,6 @@
   var mainPin = document.querySelector('.map__pin--main');
   var cardContainer = document.querySelector('.map__filters-container');
   var cards;
-  var activeState = false;
 
   var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
   var MAIN_PIN_WIDTH = mainPin.offsetWidth;
@@ -19,6 +18,8 @@
   var MAX_Y_COORD = 630;
   var MIN_X_COORD = 0;
   var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
+
+  var data = new window.data.Load('GET', window.data.URL + '/data');
 
   var setDefaultPinCoodrs = function () {
     var currentPinX = parseInt(MAIN_PIN_HEIGHT / 2, 10);
@@ -50,15 +51,15 @@
     }
   };
 
-  var onSucces = function (data) {
-    var mapPins = window.mapPins.generatePins(data);
-    cards = window.card.generateCards(data);
+  var onSucces = function (dataObj) {
+    var mapPins = window.mapPins.generatePins(dataObj);
+    cards = window.card.generateCards(dataObj);
 
     mapPinsContainer.appendChild(mapPins);
   };
 
   var onError = function () {
-    document.body.appendChild(window.data.errorMessage);
+    window.utils.showMessage(window.utils.messages.error);
   };
 
 
@@ -101,18 +102,20 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      if (!activeState) {
-        window.utils.onActiveState(map, adForm, function () {
+      if (!window.utils.activePageState) {
+        window.utils.activetePage(map, adForm, function () {
           window.form.disableFields(false);
 
-          window.data.load(onSucces, onError);
+          data.load(onSucces, onError);
 
           document.addEventListener('click', onClickMapPin);
 
         });
       }
 
-      activeState = true;
+      window.utils.activePageState = true;
+
+      onSetPinCoodrs();
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -141,10 +144,13 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('mouseup', onSetPinCoodrs);
 
   });
 
   setDefaultPinCoodrs();
+
+  window.map = {
+    setDefaultPinCoodrs: setDefaultPinCoodrs,
+  };
 
 })();

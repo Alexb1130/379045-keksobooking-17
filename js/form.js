@@ -2,6 +2,8 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
+  var map = document.querySelector('.map');
+  var mainPin = document.querySelector('.map__pin--main');
 
   var OffersProps = {
     'bungalo': 0,
@@ -24,13 +26,51 @@
     '100': ['1', '2', '3']
   };
 
+  var onError = function () {
+    window.utils.showMessage(window.utils.messages.error);
+
+    document.addEventListener('click', function () {
+      window.utils.hideMessage('.error');
+    }, {once: true});
+  };
+
+  var onSucces = function () {
+    window.utils.showMessage(window.utils.messages.success);
+
+    document.addEventListener('click', function () {
+      window.utils.hideMessage('.success');
+    }, {once: true});
+  };
+
   var disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
 
     fields.forEach(function (field) {
       field.disabled = state;
     });
+  };
 
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+
+    var formData = new FormData(adForm);
+    data.save(formData, onSucces, onError);
+    adForm.reset();
+
+    window.map.setDefaultPinCoodrs();
+
+    window.utils.deactivatePage(map, adForm, function () {
+      mainPin.style.left = '570px';
+      mainPin.style.top = '375px';
+      document.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
+        pin.remove();
+      });
+
+      disableFields(true);
+
+      window.utils.activePageState = false;
+
+    });
   };
 
   var onValidateFormFieldsChanges = function (evt) {
@@ -57,6 +97,10 @@
       });
     }
 
+    if (CapacityDisablesdFields[roomNumberSelect.value].includes(capacitySelect.value)) {
+      capacitySelect.value = CapacityProps[roomNumberSelect.value];
+    }
+
     if (evt.target === timeinSelect || evt.target === timeoutSelect) {
       timeinSelect.value = evt.target.value;
       timeoutSelect.value = evt.target.value;
@@ -69,6 +113,10 @@
 
   window.form.disableFields(true);
 
+  var data = new window.data.Save('POST', 'https://js.dump.academy/keksobooking');
+
   adForm.addEventListener('change', onValidateFormFieldsChanges);
+
+  adForm.addEventListener('submit', onFormSubmit);
 
 })();

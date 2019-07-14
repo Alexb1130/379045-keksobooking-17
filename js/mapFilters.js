@@ -4,6 +4,7 @@
   var mapFilters = document.querySelector('.map__filters');
   var housingType = mapFilters.elements['housing-type'];
   var mapPinsContainer = document.querySelector('.map__pins');
+  var data = new window.data.Load('GET', window.data.URL + '/data');
 
   var onMapFiltered = function (data) {
     var filteredItems = data.filter(function (item) {
@@ -25,6 +26,6 @@
   };
 
   mapFilters.addEventListener('change', function () {
-    window.data.load(onMapFiltered);
+    data.load(onMapFiltered);
   });
 })();
