@@ -4,8 +4,15 @@
   var mapFilters = document.querySelector('.map__filters');
   var housingType = mapFilters.elements['housing-type'];
   var housingPrice = mapFilters.elements['housing-price'];
+  var housingRooms = mapFilters.elements['housing-rooms'];
+  var housingGuests = mapFilters.elements['housing-guests'];
+  // housing - features
   var mapPinsContainer = document.querySelector('.map__pins');
   var data = new window.data.Load('GET', window.data.URL + '/data');
+
+  var onError = function () {
+    window.utils.showMessage(window.utils.messages.error);
+  };
 
   var onMapFiltered = function (dataFilters) {
     var filteredItems = dataFilters.filter(function (item) {
@@ -27,6 +34,6 @@
   };
 
   mapFilters.addEventListener('change', function () {
-    data.load(onMapFiltered);
+    data.load(onMapFiltered, onError);
   });
 })();
