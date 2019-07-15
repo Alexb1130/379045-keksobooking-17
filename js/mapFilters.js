@@ -3,6 +3,7 @@
 (function () {
   var mapFilters = document.querySelector('.map__filters');
   var housingType = mapFilters.elements['housing-type'];
+  var housingPrice = mapFilters.elements['housing-price'];
   var mapPinsContainer = document.querySelector('.map__pins');
   var data = new window.data.Load('GET', window.data.URL + '/data');
 
