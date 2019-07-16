@@ -6,7 +6,7 @@
   var housingPrice = mapFilters.elements['housing-price'];
   var housingRooms = mapFilters.elements['housing-rooms'];
   var housingGuests = mapFilters.elements['housing-guests'];
-  // housing - features
+  var housingFeatures;
   var mapPinsContainer = document.querySelector('.map__pins');
   var data = new window.data.Load('GET', window.data.URL + '/data');
 
@@ -14,10 +14,14 @@
     window.utils.showMessage(window.utils.messages.error);
   };
 
-  var housingFilter = function(prop) {
+  var housingFilter = function (prop) {
+    if (housingType.value === 'any') {
+      return true;
+    }
     return housingType.value === prop.offer.type;
-  }
-  var priceFilter = function(prop) {
+  };
+
+  var priceFilter = function (prop) {
 
     var PriceValues = {
       'low': {
@@ -36,31 +40,41 @@
 
     var priceValues = PriceValues[housingPrice.value];
 
-    return prop.offer.price >= priceValues.MIN && prop.offer.price <= priceValues.MAX
-  }
+    if (housingPrice.value === 'any') {
+      return true;
+    }
+    return prop.offer.price >= priceValues.MIN && prop.offer.price <= priceValues.MAX;
+  };
 
-  var roomsFilter = function(prop) {
+  var roomsFilter = function (prop) {
+    if (housingRooms.value === 'any') {
+      return true;
+    }
     return parseInt(housingRooms.value, 10) === prop.offer.rooms;
-  }
+  };
 
-  var guestsFilter = function(prop) {
+  var guestsFilter = function (prop) {
+    if (housingGuests.value === 'any') {
+      return true;
+    }
+    return parseInt(housingGuests.value, 10) === prop.offer.guests;
+  };
 
-  }
+  var featuresFilter = function (prop) {
+    housingFeatures = mapFilters.querySelectorAll('#housing-features input[name="features"]:checked');
+    return Array.from(housingFeatures).every(function (feature) {
+      return prop.offer.features.includes(feature.value);
+    });
+  };
 
   var onMapFiltered = function (dataItems) {
-    var filteredItems = dataItems.filter(roomsFilter);
-
-    console.log(dataItems);
+    var filteredItems = dataItems.filter(housingFilter).filter(priceFilter).filter(roomsFilter).filter(guestsFilter).filter(featuresFilter);
 
     var filteredMapPins = window.mapPins.generatePins(filteredItems);
 
     mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
       pin.remove();
     });
-
-    if (housingType.value === 'any') {
-      mapPinsContainer.appendChild(window.mapPins.generatePins(dataItems));
-    }
 
     mapPinsContainer.appendChild(filteredMapPins);
   };
