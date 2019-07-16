@@ -18,7 +18,9 @@
       return pin;
     });
 
-    mapPins.slice(0, 5).forEach(function (pin) {
+    var mapPinsCopy = mapPins.slice(0, 5);
+
+    mapPinsCopy.forEach(function (pin) {
       fragment.appendChild(pin);
     });
 
