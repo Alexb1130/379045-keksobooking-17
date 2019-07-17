@@ -67,8 +67,12 @@
     });
   };
 
+  var mainFilter = function (prop) {
+    return housingFilter(prop) && priceFilter(prop) && roomsFilter(prop) && guestsFilter(prop) && featuresFilter(prop);
+  };
+
   var onMapFiltered = function (dataItems) {
-    var filteredItems = dataItems.filter(housingFilter).filter(priceFilter).filter(roomsFilter).filter(guestsFilter).filter(featuresFilter);
+    var filteredItems = dataItems.filter(mainFilter).slice(0, 5);
 
     var filteredMapPins = window.mapPins.generatePins(filteredItems);
 
@@ -82,4 +86,5 @@
   mapFilters.addEventListener('change', function () {
     data.load(onMapFiltered, onError);
   });
+
 })();
