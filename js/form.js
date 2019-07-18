@@ -34,6 +34,10 @@
     document.addEventListener('click', function () {
       window.utils.hideMessage('.error');
     }, {once: true});
+
+    document.addEventListener('keydown', function (evt) {
+      window.utils.onKeydownMessage(evt, '.error');
+    });
   };
 
   var onSucces = function () {
@@ -42,6 +46,10 @@
     document.addEventListener('click', function () {
       window.utils.hideMessage('.success');
     }, {once: true});
+
+    document.addEventListener('keydown', function (evt) {
+      window.utils.onKeydownMessage(evt, '.success');
+    });
   };
 
   var disableFields = function (state) {
@@ -128,7 +136,7 @@
 
   window.form.disableFields(true);
 
-  var data = new window.data.Save('POST', 'https://js.dump.academy/keksobooking');
+  var data = new window.data.Save('POST', window.data.URL);
 
   adForm.addEventListener('change', onValidateFormFieldsChanges);
 

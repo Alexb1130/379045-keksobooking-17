@@ -4,12 +4,13 @@
 
   var Utils = function () {
     this.messages = {
-      error: document.querySelector('#error').content.cloneNode(true),
-      success: document.querySelector('#success').content.cloneNode(true)
+      error: '#error',
+      success: '#success'
     };
+    this.ESC_CODE = 27;
+    this.DEBOUNCE_INTERVAL = 500;
     this.activePageState = false;
     this.lastTimeout = null;
-    this.DEBOUNCE_INTERVAL = 500;
   };
 
   Utils.prototype.debounce = function (cb) {
@@ -20,13 +21,20 @@
   };
 
   Utils.prototype.showMessage = function (message) {
-    document.body.appendChild(message);
+    var messageItem = document.querySelector(message).content.cloneNode(true);
+    document.body.appendChild(messageItem);
   };
 
   Utils.prototype.hideMessage = function (message) {
     var messageItem = document.querySelector(message);
     if (messageItem) {
       document.body.removeChild(messageItem);
+    }
+  };
+
+  Utils.prototype.onKeydownMessage = function (evt, message) {
+    if (evt.keyCode === this.ESC_CODE) {
+      this.hideMessage(message);
     }
   };
 

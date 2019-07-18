@@ -53,12 +53,20 @@
   var onSucces = function (dataObj) {
     var mapPins = window.mapPins.generatePins(dataObj);
     window.card.cards = window.card.generateCards(dataObj);
-
     mapPinsContainer.appendChild(mapPins);
   };
 
   var onError = function () {
     window.utils.showMessage(window.utils.messages.error);
+
+    document.addEventListener('click', function () {
+      window.utils.hideMessage('.error');
+      data.load(onSucces, onError);
+    }, {once: true});
+
+    document.addEventListener('keydown', function (evt) {
+      window.utils.onKeydownMessage(evt, '.error');
+    });
   };
 
 
@@ -136,7 +144,7 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      preventLossMainPin(onMouseMove);
+      preventLossMainPin(onMouseUp);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
