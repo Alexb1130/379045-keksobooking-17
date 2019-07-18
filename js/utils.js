@@ -4,20 +4,40 @@
 
   var Utils = function () {
     this.messages = {
-      error: document.querySelector('#error').content.cloneNode(true),
-      success: document.querySelector('#success').content.cloneNode(true)
+      error: '#error',
+      success: '#success'
     };
+    this.KEY_CODE = {
+      ESC: 27,
+      ENTER: 13
+    };
+    this.DEBOUNCE_INTERVAL = 500;
     this.activePageState = false;
+    this.lastTimeout = null;
+  };
+
+  Utils.prototype.debounce = function (cb) {
+    if (this.lastTimeout) {
+      window.clearTimeout(this.lastTimeout);
+    }
+    this.lastTimeout = window.setTimeout(cb, this.DEBOUNCE_INTERVAL);
   };
 
   Utils.prototype.showMessage = function (message) {
-    document.body.appendChild(message);
+    var messageItem = document.querySelector(message).content.cloneNode(true);
+    document.body.appendChild(messageItem);
   };
 
   Utils.prototype.hideMessage = function (message) {
     var messageItem = document.querySelector(message);
     if (messageItem) {
       document.body.removeChild(messageItem);
+    }
+  };
+
+  Utils.prototype.onKeydownMessage = function (evt, message) {
+    if (evt.keyCode === this.KEY_CODE.ESC) {
+      this.hideMessage(message);
     }
   };
 

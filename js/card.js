@@ -2,12 +2,21 @@
 
 (function () {
   var fragment = document.createDocumentFragment();
+  var cards = null;
 
   var OffersTypes = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
     'house': 'Дом',
     'palace': 'Дворец'
+  };
+
+  var cardHidden = function (cardItem) {
+    window.card.cards.appendChild(cardItem);
+    var pin = document.querySelector('[data-user="' + cardItem.dataset.user + '"]');
+    if (pin) {
+      pin.classList.remove('map__pin--active');
+    }
   };
 
   var generatePhotos = function (cardItem, photos) {
@@ -45,13 +54,13 @@
 
   var generateCards = function (data) {
 
-    data.forEach(function (dataItem, index) {
+    data.forEach(function (dataItem) {
       var card = document.querySelector('#card').content.cloneNode(true);
       var avatar = card.querySelector('.popup__avatar');
 
       avatar.src = dataItem.author.avatar;
       avatar.alt = dataItem.offer.type;
-      card.querySelector('.map__card').dataset.user = index;
+      card.querySelector('.map__card').dataset.user = dataItem.location.x;
       card.querySelector('.popup__title').textContent = dataItem.offer.title;
       card.querySelector('.popup__text--address').textContent = dataItem.offer.address;
       card.querySelector('.popup__text--price').textContent = dataItem.offer.price + '₽/ночь';
@@ -68,7 +77,9 @@
   };
 
   window.card = {
-    generateCards: generateCards
+    generateCards: generateCards,
+    cardHidden: cardHidden,
+    cards: cards
   };
 
 })();
