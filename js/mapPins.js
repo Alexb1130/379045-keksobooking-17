@@ -3,6 +3,13 @@
 (function () {
   var fragment = document.createDocumentFragment();
   var pinTemplate = document.querySelector('#pin').content;
+  var pins = null;
+
+  var clearPins = function () {
+    document.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
+      pin.remove();
+    });
+  };
 
   var generatePins = function (data) {
 
@@ -18,9 +25,7 @@
       return pin;
     });
 
-    var mapPinsCopy = mapPins.slice(0, 5);
-
-    mapPinsCopy.forEach(function (pin) {
+    mapPins.forEach(function (pin) {
       fragment.appendChild(pin);
     });
 
@@ -29,7 +34,9 @@
   };
 
   window.mapPins = {
-    generatePins: generatePins
+    pins: pins,
+    generatePins: generatePins,
+    clearPins: clearPins
   };
 
 })();

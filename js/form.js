@@ -2,6 +2,7 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
+  var adFromReset = adForm.querySelector('.ad-form__reset');
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
 
@@ -54,6 +55,7 @@
 
   var disableFields = function (state) {
     var fields = document.querySelectorAll('fieldset');
+    adForm.elements.address.disabled = true;
 
     fields.forEach(function (field) {
       field.disabled = state;
@@ -62,6 +64,7 @@
 
   var onFormSubmit = function (evt) {
     evt.preventDefault();
+    adForm.elements.address.disabled = false;
 
     var formData = new FormData(adForm);
     data.save(formData, onSucces, onError);
@@ -72,12 +75,25 @@
     window.utils.deactivatePage(map, adForm, function () {
       mainPin.style.left = '570px';
       mainPin.style.top = '375px';
-      document.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
-        pin.remove();
-      });
-
+      window.mapPins.clearPins();
       disableFields(true);
 
+      window.utils.activePageState = false;
+
+    });
+  };
+
+  var onFormReset = function (evt) {
+    evt.preventDefault();
+    adForm.reset();
+
+    window.map.setDefaultPinCoodrs();
+
+    window.utils.deactivatePage(map, adForm, function () {
+      mainPin.style.left = '570px';
+      mainPin.style.top = '375px';
+      window.mapPins.clearPins();
+      disableFields(true);
       window.utils.activePageState = false;
 
     });
@@ -141,5 +157,6 @@
   adForm.addEventListener('change', onValidateFormFieldsChanges);
 
   adForm.addEventListener('submit', onFormSubmit);
+  adFromReset.addEventListener('click', onFormReset);
 
 })();

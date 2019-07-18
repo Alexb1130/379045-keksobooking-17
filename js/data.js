@@ -2,6 +2,7 @@
 
 (function () {
   var URL = 'https://js.dump.academy/keksobooking';
+  var dataItems;
 
   var Data = function (method, url) {
     this.method = method;
@@ -40,6 +41,7 @@
 
   window.data = {
     URL: URL,
+    dataItems: dataItems,
     Load: Data,
     Save: Data,
   };

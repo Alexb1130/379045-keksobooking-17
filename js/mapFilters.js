@@ -8,11 +8,6 @@
   var housingGuests = mapFilters.elements['housing-guests'];
   var housingFeatures;
   var mapPinsContainer = document.querySelector('.map__pins');
-  var data = new window.data.Load('GET', window.data.URL + '/data');
-
-  var onError = function () {
-    window.utils.showMessage(window.utils.messages.error);
-  };
 
   var housingFilter = function (prop) {
     if (housingType.value === 'any') {
@@ -61,7 +56,7 @@
   };
 
   var featuresFilter = function (prop) {
-    housingFeatures = mapFilters.querySelectorAll('#housing-features input[name="features"]:checked');
+    housingFeatures = mapFilters.querySelectorAll('#housing-features input:checked');
     return Array.from(housingFeatures).every(function (feature) {
       return prop.offer.features.includes(feature.value);
     });
@@ -71,15 +66,14 @@
     return housingFilter(prop) && priceFilter(prop) && roomsFilter(prop) && guestsFilter(prop) && featuresFilter(prop);
   };
 
-  var onMapFiltered = function (dataItems) {
-    var filteredItems = dataItems.filter(mainFilter).slice(0, 5);
+  var onMapFiltered = function () {
+
+    var filteredItems = window.data.dataItems.filter(mainFilter).slice(0, 5);
 
     var filteredMapPins = window.mapPins.generatePins(filteredItems);
 
     window.utils.debounce(function () {
-      mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
-        pin.remove();
-      });
+      window.mapPins.clearPins();
       var card = document.querySelector('.map__card');
       if (card) {
         window.card.cardHidden(card);
@@ -88,8 +82,6 @@
     });
   };
 
-  mapFilters.addEventListener('change', function () {
-    data.load(onMapFiltered, onError);
-  });
+  mapFilters.addEventListener('change', onMapFiltered);
 
 })();

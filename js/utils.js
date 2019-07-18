@@ -7,7 +7,10 @@
       error: '#error',
       success: '#success'
     };
-    this.ESC_CODE = 27;
+    this.KEY_CODE = {
+      ESC: 27,
+      ENTER: 13
+    };
     this.DEBOUNCE_INTERVAL = 500;
     this.activePageState = false;
     this.lastTimeout = null;
@@ -33,7 +36,7 @@
   };
 
   Utils.prototype.onKeydownMessage = function (evt, message) {
-    if (evt.keyCode === this.ESC_CODE) {
+    if (evt.keyCode === this.KEY_CODE.ESC) {
       this.hideMessage(message);
     }
   };
