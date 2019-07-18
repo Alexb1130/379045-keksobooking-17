@@ -5,6 +5,8 @@
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
 
+  var errorField = '1px solid tomato';
+
   var OffersProps = {
     'bungalo': 0,
     'flat': 1000,
@@ -74,8 +76,10 @@
   };
 
   var onValidateFormFieldsChanges = function (evt) {
-    var typeSelect = adForm.elements.type;
     var priceField = adForm.elements.price;
+    var titleFiled = adForm.elements.title;
+    var addressField = adForm.elements.address;
+    var typeSelect = adForm.elements.type;
     var timeinSelect = adForm.elements.timein;
     var timeoutSelect = adForm.elements.timeout;
     var roomNumberSelect = adForm.elements.rooms;
@@ -83,6 +87,14 @@
 
     priceField.placeholder = OffersProps[typeSelect.value];
     priceField.min = OffersProps[typeSelect.value];
+
+    if (evt.target === titleFiled || addressField || priceField) {
+      if (!evt.target.validity.valid) {
+        evt.target.style.border = errorField;
+      } else {
+        evt.target.style.border = 'none';
+      }
+    }
 
     if (evt.target === roomNumberSelect) {
 
@@ -99,6 +111,9 @@
 
     if (CapacityDisablesdFields[roomNumberSelect.value].includes(capacitySelect.value)) {
       capacitySelect.value = CapacityProps[roomNumberSelect.value];
+      capacitySelect.style.border = errorField;
+    } else {
+      capacitySelect.style.border = 'none';
     }
 
     if (evt.target === timeinSelect || evt.target === timeoutSelect) {
