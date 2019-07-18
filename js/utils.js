@@ -8,6 +8,15 @@
       success: document.querySelector('#success').content.cloneNode(true)
     };
     this.activePageState = false;
+    this.lastTimeout = null;
+    this.DEBOUNCE_INTERVAL = 500;
+  };
+
+  Utils.prototype.debounce = function (cb) {
+    if (this.lastTimeout) {
+      window.clearTimeout(this.lastTimeout);
+    }
+    this.lastTimeout = window.setTimeout(cb, this.DEBOUNCE_INTERVAL);
   };
 
   Utils.prototype.showMessage = function (message) {

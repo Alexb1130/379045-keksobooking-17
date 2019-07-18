@@ -2,12 +2,21 @@
 
 (function () {
   var fragment = document.createDocumentFragment();
+  var cards = null;
 
   var OffersTypes = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
     'house': 'Дом',
     'palace': 'Дворец'
+  };
+
+  var cardHidden = function (cardItem) {
+    window.card.cards.appendChild(cardItem);
+    var pin = document.querySelector('[data-user="' + cardItem.dataset.user + '"]');
+    if (pin) {
+      pin.classList.remove('map__pin--active');
+    }
   };
 
   var generatePhotos = function (cardItem, photos) {
@@ -68,7 +77,9 @@
   };
 
   window.card = {
-    generateCards: generateCards
+    generateCards: generateCards,
+    cardHidden: cardHidden,
+    cards: cards
   };
 
 })();

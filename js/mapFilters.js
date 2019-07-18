@@ -76,11 +76,16 @@
 
     var filteredMapPins = window.mapPins.generatePins(filteredItems);
 
-    mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
-      pin.remove();
+    window.utils.debounce(function () {
+      mapPinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (pin) {
+        pin.remove();
+      });
+      var card = document.querySelector('.map__card');
+      if (card) {
+        window.card.cardHidden(card);
+      }
+      mapPinsContainer.appendChild(filteredMapPins);
     });
-
-    mapPinsContainer.appendChild(filteredMapPins);
   };
 
   mapFilters.addEventListener('change', function () {

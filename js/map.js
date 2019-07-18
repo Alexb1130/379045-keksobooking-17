@@ -7,7 +7,6 @@
   var mapPinsContainer = map.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
   var cardContainer = document.querySelector('.map__filters-container');
-  var cards;
 
   var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
   var MAIN_PIN_WIDTH = mainPin.offsetWidth;
@@ -53,7 +52,7 @@
 
   var onSucces = function (dataObj) {
     var mapPins = window.mapPins.generatePins(dataObj);
-    cards = window.card.generateCards(dataObj);
+    window.card.cards = window.card.generateCards(dataObj);
 
     mapPinsContainer.appendChild(mapPins);
   };
@@ -77,31 +76,25 @@
       var activePin = mapPinsContainer.querySelector('.map__pin--active');
       var activeCard = map.querySelector('.map__card--active');
 
-      var cardHidden = function () {
-        cards.appendChild(card);
-        var pin = map.querySelector('[data-user="' + card.dataset.user + '"]');
-        if (pin) {
-          pin.classList.remove('map__pin--active');
-        }
-      };
-
       if (mapPin) {
         if (activePin && activeCard) {
-          cards.appendChild(activeCard);
+          window.card.cards.appendChild(activeCard);
           activeCard.classList.remove('map__card--active');
           activePin.classList.remove('map__pin--active');
         }
 
         mapPin.classList.add('map__pin--active');
-        card = cards.querySelector('[data-user="' + mapPin.dataset.user + '"]');
+        card = window.card.cards.querySelector('[data-user="' + mapPin.dataset.user + '"]');
         card.classList.add('map__card--active');
         map.insertBefore(card, cardContainer);
 
-        card.querySelector('.popup__close').addEventListener('click', cardHidden);
+        card.querySelector('.popup__close').addEventListener('click', function () {
+          window.card.cardHidden(card);
+        });
 
         document.addEventListener('keydown', function (e) {
           if (e.keyCode === 27) {
-            cardHidden();
+            window.card.cardHidden(card);
           }
         }, {once: true});
       }
