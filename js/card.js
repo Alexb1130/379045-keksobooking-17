@@ -11,7 +11,7 @@
     'palace': 'Дворец'
   };
 
-  var cardHidden = function (cardItem) {
+  var cardHide = function (cardItem) {
     window.card.cards.appendChild(cardItem);
     var pin = document.querySelector('[data-user="' + cardItem.dataset.user + '"]');
     if (pin) {
@@ -78,7 +78,7 @@
 
   window.card = {
     generateCards: generateCards,
-    cardHidden: cardHidden,
+    cardHide: cardHide,
     cards: cards
   };
 

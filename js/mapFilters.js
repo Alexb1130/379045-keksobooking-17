@@ -9,14 +9,14 @@
   var housingFeatures;
   var mapPinsContainer = document.querySelector('.map__pins');
 
-  var housingFilter = function (prop) {
+  var housingFiltered = function (prop) {
     if (housingType.value === 'any') {
       return true;
     }
     return housingType.value === prop.offer.type;
   };
 
-  var priceFilter = function (prop) {
+  var priceFiltered = function (prop) {
 
     var PriceValues = {
       'low': {
@@ -41,34 +41,34 @@
     return prop.offer.price >= priceValues.MIN && prop.offer.price <= priceValues.MAX;
   };
 
-  var roomsFilter = function (prop) {
+  var roomsFiltered = function (prop) {
     if (housingRooms.value === 'any') {
       return true;
     }
     return parseInt(housingRooms.value, 10) === prop.offer.rooms;
   };
 
-  var guestsFilter = function (prop) {
+  var guestsFiltered = function (prop) {
     if (housingGuests.value === 'any') {
       return true;
     }
     return parseInt(housingGuests.value, 10) === prop.offer.guests;
   };
 
-  var featuresFilter = function (prop) {
+  var featuresFiltered = function (prop) {
     housingFeatures = mapFilters.querySelectorAll('#housing-features input:checked');
     return Array.from(housingFeatures).every(function (feature) {
       return prop.offer.features.includes(feature.value);
     });
   };
 
-  var mainFilter = function (prop) {
-    return housingFilter(prop) && priceFilter(prop) && roomsFilter(prop) && guestsFilter(prop) && featuresFilter(prop);
+  var mainFiltered = function (prop) {
+    return housingFiltered(prop) && priceFiltered(prop) && roomsFiltered(prop) && guestsFiltered(prop) && featuresFiltered(prop);
   };
 
   var onMapFiltered = function () {
 
-    var filteredItems = window.data.dataItems.filter(mainFilter).slice(0, 5);
+    var filteredItems = window.data.dataItems.filter(mainFiltered).slice(0, 5);
 
     var filteredMapPins = window.mapPins.generatePins(filteredItems);
 
@@ -76,7 +76,7 @@
       window.mapPins.clearPins();
       var card = document.querySelector('.map__card');
       if (card) {
-        window.card.cardHidden(card);
+        window.card.cardHide(card);
       }
       mapPinsContainer.appendChild(filteredMapPins);
     });

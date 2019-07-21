@@ -89,12 +89,12 @@
       map.insertBefore(card, cardContainer);
 
       card.querySelector('.popup__close').addEventListener('click', function () {
-        window.card.cardHidden(card);
+        window.card.cardHide(card);
       });
 
       document.addEventListener('keydown', function (e) {
-        if (e.keyCode === window.utils.KEY_CODE.ESC) {
-          window.card.cardHidden(card);
+        if (e.keyCode === window.utils.KeyCode.ESC) {
+          window.card.cardHide(card);
         }
       }, {once: true});
     }
@@ -156,7 +156,7 @@
   });
 
   document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.KEY_CODE.ENTER && !window.utils.activePageState) {
+    if (evt.keyCode === window.utils.KeyCode.ENTER && !window.utils.activePageState) {
       window.utils.activetePage(map, adForm, function () {
         window.form.disableFields(false);
         data.load(onSucces, onError);

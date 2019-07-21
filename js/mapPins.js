@@ -13,7 +13,7 @@
 
   var generatePins = function (data) {
 
-    var mapPins = data.map(function (dataItem) {
+    data.forEach(function (dataItem) {
       var pin = pinTemplate.querySelector('.map__pin').cloneNode(true);
       pin.dataset.user = dataItem.location.x;
       var avatar = pin.querySelector('img');
@@ -22,10 +22,6 @@
       avatar.src = dataItem.author.avatar;
       avatar.alt = dataItem.offer.type;
 
-      return pin;
-    });
-
-    mapPins.forEach(function (pin) {
       fragment.appendChild(pin);
     });
 

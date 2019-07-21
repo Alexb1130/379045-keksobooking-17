@@ -7,7 +7,7 @@
       error: '#error',
       success: '#success'
     };
-    this.KEY_CODE = {
+    this.KeyCode = {
       ESC: 27,
       ENTER: 13
     };
@@ -36,7 +36,7 @@
   };
 
   Utils.prototype.onKeydownMessage = function (evt, message) {
-    if (evt.keyCode === this.KEY_CODE.ESC) {
+    if (evt.keyCode === this.KeyCode.ESC) {
       this.hideMessage(message);
     }
   };
