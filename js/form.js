@@ -8,6 +8,11 @@
 
   var errorField = '1px solid tomato';
 
+  var mainPinDefaultCoords = {
+    x: '570px',
+    y: '375px'
+  };
+
   var OffersProps = {
     'bungalo': 0,
     'flat': 1000,
@@ -38,7 +43,7 @@
 
     document.addEventListener('keydown', function (evt) {
       window.utils.onKeydownMessage(evt, '.error');
-    });
+    }, {once: true});
   };
 
   var onSucces = function () {
@@ -50,7 +55,7 @@
 
     document.addEventListener('keydown', function (evt) {
       window.utils.onKeydownMessage(evt, '.success');
-    });
+    }, {once: true});
   };
 
   var disableFields = function (state) {
@@ -62,6 +67,17 @@
     });
   };
 
+  var resetToDefaultState = function () {
+    window.utils.deactivatePage(map, adForm, function () {
+      mainPin.style.left = mainPinDefaultCoords.x;
+      mainPin.style.top = mainPinDefaultCoords.y;
+      window.map.setDefaultPinCoodrs();
+      window.mapPins.clearPins();
+      disableFields(true);
+      window.utils.activePageState = false;
+    });
+  };
+
   var onFormSubmit = function (evt) {
     evt.preventDefault();
     adForm.elements.address.disabled = false;
@@ -69,34 +85,13 @@
     var formData = new FormData(adForm);
     data.save(formData, onSucces, onError);
     adForm.reset();
-
-    window.map.setDefaultPinCoodrs();
-
-    window.utils.deactivatePage(map, adForm, function () {
-      mainPin.style.left = '570px';
-      mainPin.style.top = '375px';
-      window.mapPins.clearPins();
-      disableFields(true);
-
-      window.utils.activePageState = false;
-
-    });
+    resetToDefaultState();
   };
 
   var onFormReset = function (evt) {
     evt.preventDefault();
     adForm.reset();
-
-    window.map.setDefaultPinCoodrs();
-
-    window.utils.deactivatePage(map, adForm, function () {
-      mainPin.style.left = '570px';
-      mainPin.style.top = '375px';
-      window.mapPins.clearPins();
-      disableFields(true);
-      window.utils.activePageState = false;
-
-    });
+    resetToDefaultState();
   };
 
   var onValidateFormFieldsChanges = function (evt) {

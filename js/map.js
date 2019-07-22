@@ -1,22 +1,23 @@
 'use strict';
 
 (function () {
+
+  var MAP_WIDTH = 1200;
+  var OFFSET = 20;
+  var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HEIGHT = 65;
+  var MAIN_PIN_SHARP_END = 20;
+  var MIN_Y_COORD = 130;
+  var MAX_Y_COORD = 630;
+  var MIN_X_COORD = 0;
+  var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
+
   var adForm = document.querySelector('.ad-form');
   var addressField = adForm.elements.address;
   var map = document.querySelector('.map');
   var mapPinsContainer = map.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
   var cardContainer = document.querySelector('.map__filters-container');
-
-  var MAIN_PIN_HEIGHT = mainPin.offsetHeight;
-  var MAIN_PIN_WIDTH = mainPin.offsetWidth;
-  var MAP_WIDTH = mapPinsContainer.offsetWidth;
-  var MAIN_PIN_SHARP_END = 20;
-  var OFFSET = 20;
-  var MIN_Y_COORD = 130;
-  var MAX_Y_COORD = 630;
-  var MIN_X_COORD = 0;
-  var MAX_X_COORD = MAP_WIDTH - MAIN_PIN_WIDTH;
 
   var data = new window.data.Load('GET', window.data.URL + '/data');
 

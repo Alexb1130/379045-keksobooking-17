@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_ITEMS = 5;
+
   var mapFilters = document.querySelector('.map__filters');
   var housingType = mapFilters.elements['housing-type'];
   var housingPrice = mapFilters.elements['housing-price'];
@@ -9,11 +11,15 @@
   var housingFeatures;
   var mapPinsContainer = document.querySelector('.map__pins');
 
-  var housingFiltered = function (prop) {
-    if (housingType.value === 'any') {
+  var filteredByParams = function (item, prop, type) {
+    if (item.value === 'any') {
       return true;
     }
-    return housingType.value === prop.offer.type;
+    return item.value === prop.offer[type].toString();
+  };
+
+  var housingFiltered = function (prop) {
+    return filteredByParams(housingType, prop, 'type');
   };
 
   var priceFiltered = function (prop) {
@@ -42,17 +48,11 @@
   };
 
   var roomsFiltered = function (prop) {
-    if (housingRooms.value === 'any') {
-      return true;
-    }
-    return parseInt(housingRooms.value, 10) === prop.offer.rooms;
+    return filteredByParams(housingRooms, prop, 'rooms');
   };
 
   var guestsFiltered = function (prop) {
-    if (housingGuests.value === 'any') {
-      return true;
-    }
-    return parseInt(housingGuests.value, 10) === prop.offer.guests;
+    return filteredByParams(housingGuests, prop, 'guests');
   };
 
   var featuresFiltered = function (prop) {
@@ -68,7 +68,7 @@
 
   var onMapFiltered = function () {
 
-    var filteredItems = window.data.dataItems.filter(mainFiltered).slice(0, 5);
+    var filteredItems = window.data.dataItems.filter(mainFiltered).slice(0, MAX_ITEMS);
 
     var filteredMapPins = window.mapPins.generatePins(filteredItems);
 
