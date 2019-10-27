@@ -11,7 +11,7 @@
       ESC: 27,
       ENTER: 13
     };
-    this.DEBOUNCE_INTERVAL = 500;
+    this.DEBOUNCE_INTERVAL = 200;
     this.activePageState = false;
     this.lastTimeout = null;
   };
